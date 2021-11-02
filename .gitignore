@@ -1,0 +1,52 @@
+# egg info
+simview.egg-info
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.pyc
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#Emacs
+*~
+.#*
+#*
+
+#Cmake
+build/*
+
+#LaTeX
+*.aux
+*.log
+
+#VScode
+*.vscode
+
+#macOS autogen
+.DS_Store
+
+#pycache files
+__pycache__/

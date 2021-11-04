@@ -7,13 +7,18 @@ public class TouchInput : MonoBehaviour
 {
 
     private float waitTime = -3;
+    private List<float> values = new List<float>();
     private float elapsed = 0;
     private float totalElapsed = 0;
     bool waiting = false;
     bool measuring = false;
     private int attempt = 0;
+    private Color waitColor = new Color32(0x1b, 0x9e, 0x77, 0xff);
+    private Color measureColor = new Color32(0xd9, 0x5f, 0x02, 0xff);
+
 
     public Text output;
+    public Text summary;
 
     // Start is called before the first frame update
     void Start()
@@ -58,9 +63,11 @@ public class TouchInput : MonoBehaviour
 
         if (measuring)
         {
+            summary.text = (elapsed * 100).ToString("F3") + " ms";
             if (touchStop())
             {
                 log((elapsed * 100).ToString("F3") + "ms");
+                values.Add(elapsed * 100);
                 ResetMeasure();
             }
             else if (elapsed > 2)
@@ -69,12 +76,21 @@ public class TouchInput : MonoBehaviour
                 ResetMeasure();
             }
         }
+        else
+        {
+            if (values.Count > 0)
+            {
+                // get median
+                values.Sort();
+                summary.text = (values[values.Count / 2]).ToString("F3") + " ms";
+            }
+        }
     }
 
     void log(string m)
     {
         var minutes = Time.realtimeSinceStartup / 60;
-        output.text += attempt.ToString("F3") + "@" + minutes.ToString("F3") + "min | " + m + "\n";
+        output.text += attempt.ToString("D3") + "@" + minutes.ToString("F3") + "min | " + m + "\n";
     }
 
     void BeginWait()
@@ -82,12 +98,12 @@ public class TouchInput : MonoBehaviour
         waiting = true;
         elapsed = 0;
         waitTime = Random.Range(0.75f, 2);
-        ChangeColor(Color.green);
+        ChangeColor(waitColor);
     }
 
     void BeginMeasure()
     {
-        ChangeColor(Color.red);
+        ChangeColor(measureColor);
         measuring = true;
         waiting = false;
         elapsed = 0;
